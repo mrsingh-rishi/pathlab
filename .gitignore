@@ -10,3 +10,5 @@ node_modules/
 
 # Ignore any local configuration files
 config.js
+
+backend/dist
