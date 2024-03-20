@@ -8,7 +8,7 @@ async function login(req: Request, res: Response) {
   try {
     const { success } = loginBody.safeParse(req.body);
     if (!success) {
-      res.status(400).json({ message: "Bad Request" });
+      return res.status(400).json({ message: "Bad Request" });
     }
     const user: UserDocument | null = await User.findOne({
       email: req.body.email,

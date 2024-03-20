@@ -14,7 +14,6 @@ async function createBooking(req: AuthenticatedRequest, res: Response) {
     const { name, address, contactNumber, bookingTime } =
       validateBookingData(req);
     const userId = req.userId;
-    console.log(userId);
     const booking = await Booking.create({
       user: userId,
       name,
@@ -25,7 +24,6 @@ async function createBooking(req: AuthenticatedRequest, res: Response) {
 
     res.status(201).json(booking);
   } catch (error: any) {
-    console.error(error.message);
     res.status(400).json({ error: error.message });
   }
 }
@@ -35,8 +33,7 @@ async function getAllBookings(req: Request, res: Response) {
   try {
     const bookings = await Booking.find();
     res.status(200).json(bookings);
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
     res.status(500).json({ error: "Server error" });
   }
 }

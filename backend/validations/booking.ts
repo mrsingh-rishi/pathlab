@@ -1,4 +1,4 @@
-import { Request } from "express";
+import { Request, Response } from "express";
 import { z, ZodError } from "zod";
 // Define Zod validation schema for the booking data
 const bookingSchema = z.object({
@@ -28,7 +28,7 @@ const bookingUpdateSchema = z.object({
 });
 
 // Function to validate request body using Zod schema
-function validateBookingUpdateData(req: Request) {
+function validateBookingUpdateData(req: Request, res: Response) {
   try {
     const { success } = bookingUpdateSchema.safeParse(req.body);
     if (!success) {
@@ -37,14 +37,16 @@ function validateBookingUpdateData(req: Request) {
     return req.body;
   } catch (error: any) {
     if (error instanceof ZodError) {
-      throw new Error("Invalid booking update data " + error.message);
+      return res
+        .status(400)
+        .json({ message: "Invalid booking update " + error.message });
     }
     throw error;
   }
 }
 
 // Function to validate request body using Zod schema
-function validateBookingData(req: Request) {
+function validateBookingData(req: Request, res: Response) {
   try {
     const { success } = bookingSchema.safeParse(req.body);
     if (!success) {
@@ -53,7 +55,9 @@ function validateBookingData(req: Request) {
     return req.body;
   } catch (error: any) {
     if (error instanceof ZodError) {
-      throw new Error("Invalid booking update data " + error.message);
+      return res
+        .status(400)
+        .json({ message: "Invalid booking update " + error.message });
     }
     throw error;
   }
